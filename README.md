@@ -43,9 +43,12 @@ This is the contents of the published config file:
 
 ```php
 return [
-    'start_directory' => 'app/Livewire',  // Defaulting to the app/Livewire directory as per Livewire 3 convention, but users can change this.
+    'start_directory' => 'app/Livewire',  // Defaulting to the app directory, but users can change this.
+    'disk' => 'base_path',
+    'method_name_style' => 'snake_case', // StudlyCase or  snake_case
 ];
 ```
+I'm the kind of monster that GREATLY prefers snake_case for method names, so that's the default, but it's easy enough to change it to StudlyCase if that's your preference
 
 ## Usage
 
