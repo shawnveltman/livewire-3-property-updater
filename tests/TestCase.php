@@ -35,12 +35,13 @@ class TestCase extends Orchestra
         */
     }
 
-    function setup_file_with_content($filename, $content)
+    public function setup_file_with_content($filename, $content)
     {
         $tempDirectory = base_path('tests/temp');
         Storage::disk('base_path')->makeDirectory($tempDirectory);
         config()->set('livewire-3-property-updater.start_directory', $tempDirectory);
-        Storage::disk('base_path')->put($tempDirectory . '/' . $filename, $content);
-        return $tempDirectory . '/' . $filename;
+        Storage::disk('base_path')->put($tempDirectory.'/'.$filename, $content);
+
+        return $tempDirectory.'/'.$filename;
     }
 }
