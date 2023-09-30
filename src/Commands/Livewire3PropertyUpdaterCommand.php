@@ -63,6 +63,7 @@ class Livewire3PropertyUpdaterCommand extends Command
             Storage::disk($disk)->put($file, $contents);
         }
 
+
         return 0;
     }
 }
