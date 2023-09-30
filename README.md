@@ -30,7 +30,7 @@ This package automates that update in your Livewire components folder.
 You can install the package via composer:
 
 ```bash
-composer require shawnveltman/livewire-3-property-updater
+composer require --dev shawnveltman/livewire-3-property-updater
 ```
 
 You can publish the config file with:
