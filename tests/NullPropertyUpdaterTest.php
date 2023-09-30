@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Storage;
 use function Pest\Laravel\artisan;
 
 beforeEach(function () {
-// Set the disk configuration for the tests
+    // Set the disk configuration for the tests
     Config::set('filesystems.disks.base_path', [
         'driver' => 'local',
         'root'   => base_path(),
@@ -21,17 +21,6 @@ afterEach(function () {
         Storage::disk('base_path')->deleteDirectory($tempDirectory);
     }
 });
-
-function setup_temp_directory(): string
-{
-    $tempDirectory = base_path('tests/temp');
-    Storage::disk('base_path')->makeDirectory($tempDirectory);
-
-// Mock the config to return our temp directory
-    config()->set('livewire-3-property-updater.start_directory', $tempDirectory);
-
-    return $tempDirectory;
-}
 
 /** @test */
 it('transforms computed properties set to null', function () {
@@ -49,10 +38,7 @@ class TestComponent extends Component
 }
 EOD;
 
-    $tempDirectory = setup_temp_directory();
-    $filePath      = $tempDirectory . '/TestComponent.php';
-    Storage::disk('base_path')->put($filePath, $content);
-
+    $filePath = $this->setup_file_with_content('TestComponent.php', $content);
     artisan('shawnveltman:livewire-null-property-updater')->assertExitCode(0);
 
     $contents = Storage::disk('base_path')->get($filePath);
@@ -74,17 +60,14 @@ class TestComponent extends Component
 }
 EOD;
 
-    $tempDirectory = setup_temp_directory();
-    $filePath      = $tempDirectory . '/TestComponent.php';
-    Storage::disk('base_path')->put($filePath, $content);
-
+    $filePath = $this->setup_file_with_content('TestComponent.php', $content);
     artisan('shawnveltman:livewire-null-property-updater')->assertExitCode(0);
 
     $contents = Storage::disk('base_path')->get($filePath);
     expect($contents)->toContain('$this->random = null;');
 });
 
-
+/** @test */
 it('ignores files without computed properties set to null', function () {
     $content = <<<'EOD'
 <?php
@@ -100,10 +83,7 @@ class TestComponent extends Component
 }
 EOD;
 
-    $tempDirectory = setup_temp_directory();
-    $filePath      = $tempDirectory . '/TestComponent.php';
-    Storage::disk('base_path')->put($filePath, $content);
-
+    $filePath = $this->setup_file_with_content('TestComponent.php', $content);
     artisan('shawnveltman:livewire-null-property-updater')->assertExitCode(0);
 
     $contents = Storage::disk('base_path')->get($filePath);
@@ -122,6 +102,7 @@ it('shows an error when the base_path disk is not configured', function () {
         ->assertExitCode(1);
 });
 
+/** @test */
 it('handles multiple spaces when transforming computed properties set to null', function () {
     $content = <<<'EOD'
 <?php
@@ -144,6 +125,7 @@ EOD;
     expect($contents)->toContain('unset($this->foo);');
 });
 
+/** @test */
 it('handles multiple properties in a file', function () {
     $content = <<<'EOD'
 <?php
@@ -173,6 +155,7 @@ EOD;
         ->toContain('unset($this->bar);');
 });
 
+/** @test */
 it('handles multiple instances of the same property set to null', function () {
     $content = <<<'EOD'
 <?php
@@ -201,4 +184,3 @@ EOD;
     $instancesOfUnset = substr_count($contents, 'unset($this->foo);');
     expect($instancesOfUnset)->toBe(2);
 });
-
