@@ -43,7 +43,7 @@ This is the contents of the published config file:
 
 ```php
 return [
-    'start_directory' => base_path('app/Livewire'),  // Defaulting to the app/Livewire directory as per Livewire 3 convention, but users can change this.
+    'start_directory' => 'app/Livewire',  // Defaulting to the app/Livewire directory as per Livewire 3 convention, but users can change this.
 ];
 ```
 
