@@ -149,3 +149,23 @@ EOD
     // Cleanup
     Storage::disk('local')->deleteDirectory($tempDirectory);
 });
+
+it('does not affect files outside the specified directory', function () {
+    $outsideDirectory = base_path('tests/outside_temp');
+    Storage::disk('local')->makeDirectory($outsideDirectory);
+    Storage::disk('local')->put($outsideDirectory . '/OutsideComponent.php', 'public function getFooProperty() {...}');
+
+    // Mock the config to return a different directory
+    config()->set('livewire-3-property-updater.start_directory', base_path('tests/temp'));
+
+    // Run the command
+    artisan('livewire-3-property-updater')->assertExitCode(0);
+
+    // Assert file contents remain unchanged
+    $contents = Storage::disk('local')->get($outsideDirectory . '/OutsideComponent.php');
+    expect($contents)->toBe('public function getFooProperty() {...}');
+
+    // Cleanup
+    Storage::disk('local')->deleteDirectory($outsideDirectory);
+});
+
