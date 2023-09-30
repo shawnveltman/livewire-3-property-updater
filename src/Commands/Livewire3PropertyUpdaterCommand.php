@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class Livewire3PropertyUpdaterCommand extends Command
 {
-    public $signature = 'livewire-3-property-updater';
+    public $signature = 'shawnveltman:livewire-3-property-updater';
 
     public $description = 'My command';
 
@@ -20,7 +20,6 @@ class Livewire3PropertyUpdaterCommand extends Command
         foreach ($files as $file)
         {
             $contents = Storage::disk('local')->get($file);
-            ray($contents);  // This will display the content of each file being processed
 
             // ... rest of the logic ...
             // Check if file contains old property pattern

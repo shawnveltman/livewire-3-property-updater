@@ -19,7 +19,7 @@ it('converts livewire properties', function () {
     Storage::disk('local')->put($tempDirectory . '/SampleComponent.php', 'public function getFooProperty() {...}');
 
     // Run the command
-    artisan('livewire-3-property-updater')->assertExitCode(0);
+    artisan('shawnveltman:livewire-3-property-updater')->assertExitCode(0);
 
     // Assert file contents were updated
     $contents = Storage::disk('local')->get($tempDirectory . '/SampleComponent.php');
@@ -50,7 +50,7 @@ EOD
     );
 
     // Run the command
-    artisan('livewire-3-property-updater')->assertExitCode(0);
+    artisan('shawnveltman:livewire-3-property-updater')->assertExitCode(0);
 
     // Assert
     $contents = Storage::disk('local')->get($tempFile);
@@ -80,7 +80,7 @@ EOD;
     Storage::disk('local')->put($tempFile, $originalContents);
 
     // Run the command
-    artisan('livewire-3-property-updater')->assertExitCode(0);
+    artisan('shawnveltman:livewire-3-property-updater')->assertExitCode(0);
 
     // Assert
     $contents = Storage::disk('local')->get($tempFile);
@@ -107,7 +107,7 @@ EOD
     );
 
     // Run the command
-    artisan('livewire-3-property-updater')->assertExitCode(0);
+    artisan('shawnveltman:livewire-3-property-updater')->assertExitCode(0);
 
     // Assert
     $contents = Storage::disk('local')->get($tempFile);
@@ -137,7 +137,7 @@ EOD
     );
 
     // Run the command
-    artisan('livewire-3-property-updater')->assertExitCode(0);
+    artisan('shawnveltman:livewire-3-property-updater')->assertExitCode(0);
 
     // Assert
     $contents = Storage::disk('local')->get($tempFile);
@@ -159,7 +159,7 @@ it('does not affect files outside the specified directory', function () {
     config()->set('livewire-3-property-updater.start_directory', base_path('tests/temp'));
 
     // Run the command
-    artisan('livewire-3-property-updater')->assertExitCode(0);
+    artisan('shawnveltman:livewire-3-property-updater')->assertExitCode(0);
 
     // Assert file contents remain unchanged
     $contents = Storage::disk('local')->get($outsideDirectory . '/OutsideComponent.php');

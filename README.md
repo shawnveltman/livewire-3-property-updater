@@ -5,15 +5,25 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/shawnveltman/livewire-3-property-updater/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/shawnveltman/livewire-3-property-updater/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/shawnveltman/livewire-3-property-updater.svg?style=flat-square)](https://packagist.org/packages/shawnveltman/livewire-3-property-updater)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+In Livewire 2, a computed property "foo" would be defined like this:
 
-## Support us
+```php
+public function getFooProperty()
+{
+    return 'bar';
+}
+```
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/livewire-3-property-updater.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/livewire-3-property-updater)
+In Livewire 3, the same property would be defined like this:
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+```php
+#[Computed]
+public function foo()
+{
+    return 'bar';
+}
+```
+This package automates that update in your Livewire components folder.
 
 ## Installation
 
@@ -21,13 +31,6 @@ You can install the package via composer:
 
 ```bash
 composer require shawnveltman/livewire-3-property-updater
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="livewire-3-property-updater-migrations"
-php artisan migrate
 ```
 
 You can publish the config file with:
@@ -40,20 +43,14 @@ This is the contents of the published config file:
 
 ```php
 return [
+    'start_directory' => base_path('app/Livewire'),  // Defaulting to the app/Livewire directory as per Livewire 3 convention, but users can change this.
 ];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="livewire-3-property-updater-views"
 ```
 
 ## Usage
 
-```php
-$livewire3PropertyUpdater = new Shawnveltman\Livewire3PropertyUpdater();
-echo $livewire3PropertyUpdater->echoPhrase('Hello, Shawnveltman!');
+```bash
+php artisan shawnveltman:livewire-3-property-updater
 ```
 
 ## Testing
@@ -61,18 +58,6 @@ echo $livewire3PropertyUpdater->echoPhrase('Hello, Shawnveltman!');
 ```bash
 composer test
 ```
-
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
 
 ## Credits
 
