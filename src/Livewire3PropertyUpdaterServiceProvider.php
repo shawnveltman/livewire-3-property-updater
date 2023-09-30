@@ -3,6 +3,7 @@
 namespace Shawnveltman\Livewire3PropertyUpdater;
 
 use Shawnveltman\Livewire3PropertyUpdater\Commands\Livewire3PropertyUpdaterCommand;
+use Shawnveltman\Livewire3PropertyUpdater\Commands\LivewireNullPropertyUpdaterCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -20,6 +21,7 @@ class Livewire3PropertyUpdaterServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews()
             ->hasMigration('create_livewire-3-property-updater_table')
-            ->hasCommand(Livewire3PropertyUpdaterCommand::class);
+            ->hasCommand(Livewire3PropertyUpdaterCommand::class)
+            ->hasCommand(LivewireNullPropertyUpdaterCommand::class);
     }
 }

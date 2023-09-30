@@ -50,11 +50,24 @@ return [
 ```
 I'm the kind of monster that GREATLY prefers snake_case for method names, so that's the default, but it's easy enough to change it to StudlyCase if that's your preference
 
-## Usage
 
+## Usage for updating computed properties
 ```bash
 php artisan shawnveltman:livewire-3-property-updater
 ```
+
+## Check For Invalid Attempts To Set Property To Null in Livewire 3
+In Livewire 3, setting a computed property to null will cause an error. After updating, you might find instances in your code where properties are explicitly set to null. This command automates the process of identifying and updating these instances to use unset instead.
+
+When running this command, it'll scan the Livewire components in your specified directory and look for computed properties being set to null. It will replace these instances with the unset function, preventing potential errors in Livewire 3.
+
+## Usage for checking null assignments
+
+```bash
+php artisan shawnveltman:livewire-null-property-updater
+```
+## Usage
+
 
 ## Testing
 
