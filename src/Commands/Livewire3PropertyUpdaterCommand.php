@@ -12,8 +12,15 @@ class Livewire3PropertyUpdaterCommand extends Command
 
     public $description = 'My command';
 
-    public function handle(): void
+    public function handle()
     {
+        // Check if the 'base_path' disk is configured
+        if (!config('filesystems.disks.base_path')) {
+            $this->error("The 'base_path' disk is not configured. Please add it to your filesystems configuration.");
+            $this->line("For more information, check the documentation of the Livewire3PropertyUpdater package.");
+            return 1;
+        }
+
         $disk = config('livewire-3-property-updater.disk', 'local'); // Default to 'local' if not specified in config
         $startDirectory = config('livewire-3-property-updater.start_directory');
         $files = Storage::disk($disk)->allFiles($startDirectory);
