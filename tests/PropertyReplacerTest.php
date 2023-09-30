@@ -246,3 +246,46 @@ EOD
     // Cleanup
     Storage::disk('base_path')->deleteDirectory($tempDirectory);
 });
+
+it('transforms method names to snake_case based on config', function () {
+    // Mock the config to transform method names to snake_case
+    config()->set('livewire-3-property-updater.method_name_style', 'snake_case');
+
+    // Setup
+    $tempDirectory = setup_temp_directory();
+    Storage::disk('base_path')->put($tempDirectory.'/SnakeCaseComponent.php', 'public function getSomeRandomProperty() {...}');
+
+    // Run the command
+    artisan('shawnveltman:livewire-3-property-updater')->assertExitCode(0);
+
+    // Assert file contents were updated
+    $contents = Storage::disk('base_path')->get($tempDirectory.'/SnakeCaseComponent.php');
+    expect($contents)
+        ->toContain('#[Computed]')
+        ->toContain('public function some_random()');
+
+    // Cleanup
+    Storage::disk('base_path')->deleteDirectory($tempDirectory);
+});
+
+it('transforms method names to StudlyCase based on config', function () {
+    // Mock the config to transform method names to StudlyCase
+    config()->set('livewire-3-property-updater.method_name_style', 'StudlyCase');
+
+    // Setup
+    $tempDirectory = setup_temp_directory();
+    Storage::disk('base_path')->put($tempDirectory.'/StudlyCaseComponent.php', 'public function getAnotherRandomProperty() {...}');
+
+    // Run the command
+    artisan('shawnveltman:livewire-3-property-updater')->assertExitCode(0);
+
+    // Assert file contents were updated
+    $contents = Storage::disk('base_path')->get($tempDirectory.'/StudlyCaseComponent.php');
+    expect($contents)
+        ->toContain('#[Computed]')
+        ->toContain('public function AnotherRandom()');
+
+    // Cleanup
+    Storage::disk('base_path')->deleteDirectory($tempDirectory);
+});
+
