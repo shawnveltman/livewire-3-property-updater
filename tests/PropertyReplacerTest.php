@@ -204,4 +204,49 @@ it('shows an error when the base_path disk does not point to the application bas
         ->assertExitCode(1); // 1 typically represents a general error in CLI applications
 });
 
+it('correctly updates all instances of the livewire properties in a file', function () {
+    // Setup
+    $tempDirectory = base_path('tests/temp');
+    Storage::disk('base_path')->makeDirectory($tempDirectory);
+
+    // Mock the config to return our temp directory
+    config()->set('livewire-3-property-updater.start_directory', $tempDirectory);
+
+    $tempFile = $tempDirectory.'/MultiplePropertiesComponent.php';
+
+    // Create a file with 4 methods: 2 of them being Livewire properties and 2 of them being regular methods
+    Storage::disk('base_path')->put($tempFile, <<<'EOD'
+<?php
+
+namespace App\Http\Livewire;
+
+class MultiplePropertiesComponent extends Component
+{
+    public function getFirstProperty() { return 'first'; }
+    public function someRandomMethod() { return true; }
+    public function getSecondProperty() { return 'second'; }
+    public function anotherRandomMethod() { return false; }
+    public function getLastProperty() { return 'last'; }
+}
+EOD
+    );
+
+    // Run the command
+    artisan('shawnveltman:livewire-3-property-updater')->assertExitCode(0);
+
+    // Assert
+    $contents = Storage::disk('base_path')->get($tempFile);
+    expect($contents)
+        ->toContain('#[Computed]' . PHP_EOL . 'public function first()')
+        ->toContain('public function someRandomMethod()')
+        ->toContain('#[Computed]' . PHP_EOL . 'public function second()')
+        ->toContain('public function anotherRandomMethod()')
+        ->toContain('#[Computed]' . PHP_EOL . 'public function last()');
+
+    // Cleanup
+    Storage::disk('base_path')->deleteDirectory($tempDirectory);
+});
+
+
+
 

@@ -36,22 +36,20 @@ class Livewire3PropertyUpdaterCommand extends Command
         foreach ($files as $file) {
             $contents = Storage::disk($disk)->get($file);
 
-            // ... rest of the logic ...
+            // Add the Computed use statement if not present and if there's any get{Property}Property method in the file
+            if (preg_match('/public function get(\w+)Property\(\)/', $contents) && !str_contains($contents, 'use Livewire\Attributes\Computed;')) {
+                // Insert the use statement right before the class declaration
+                $contents = preg_replace(
+                    '/(class\s)/',
+                    "use Livewire\Attributes\Computed;\n\n$1",
+                    $contents
+                );
+            }
 
-            // Check for the Computed attribute use statement
-            if (preg_match('/public function get(\w+)Property\(\)/', $contents, $matches)) {
+            // Keep replacing until there are no more matches
+            while (preg_match('/public function get(\w+)Property\(\)/', $contents, $matches)) {
                 $originalProperty = $matches[1];
                 $snakeCaseProperty = Str::snake($originalProperty);
-
-                // Check for the Computed attribute use statement
-                if (!str_contains($contents, 'use Livewire\Attributes\Computed;')) {
-                    // Insert the use statement right before the class declaration
-                    $contents = preg_replace(
-                        '/(class\s)/',
-                        "use Livewire\Attributes\Computed;\n\n$1",
-                        $contents
-                    );
-                }
 
                 // Replace old pattern with new one
                 $contents = str_replace(
@@ -59,9 +57,12 @@ class Livewire3PropertyUpdaterCommand extends Command
                     "#[Computed]\npublic function {$snakeCaseProperty}()",
                     $contents
                 );
-
-                Storage::disk($disk)->put($file, $contents);
             }
+
+            // Save the updated contents
+            Storage::disk($disk)->put($file, $contents);
         }
+
+        return 0;
     }
 }
