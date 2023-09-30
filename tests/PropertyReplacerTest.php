@@ -191,3 +191,17 @@ it('shows an error when the base_path disk is not configured', function () {
         ->expectsOutput("For more information, check the documentation of the Livewire3PropertyUpdater package.")
         ->assertExitCode(1); // 1 typically represents a general error in CLI applications
 });
+
+it('shows an error when the base_path disk does not point to the application base path', function () {
+    // Mock the config to set the base_path disk root to a different path
+    config()->set('filesystems.disks.base_path.root', base_path('some/other/path'));
+
+    $commandResult = artisan('shawnveltman:livewire-3-property-updater');
+
+    // Assert the error message
+    $commandResult->expectsOutput("The 'base_path' disk does not point to the application base path. Please ensure it's correctly configured.")
+        ->expectsOutput("For more information, check the documentation of the Livewire3PropertyUpdater package.")
+        ->assertExitCode(1); // 1 typically represents a general error in CLI applications
+});
+
+

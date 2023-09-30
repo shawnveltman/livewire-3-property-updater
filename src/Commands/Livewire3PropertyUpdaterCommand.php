@@ -15,8 +15,16 @@ class Livewire3PropertyUpdaterCommand extends Command
     public function handle()
     {
         // Check if the 'base_path' disk is configured
-        if (!config('filesystems.disks.base_path')) {
+        $baseDiskConfig = config('filesystems.disks.base_path');
+
+        if (!$baseDiskConfig) {
             $this->error("The 'base_path' disk is not configured. Please add it to your filesystems configuration.");
+            $this->line("For more information, check the documentation of the Livewire3PropertyUpdater package.");
+            return 1;
+        }
+
+        if ($baseDiskConfig['root'] !== base_path()) {
+            $this->error("The 'base_path' disk does not point to the application base path. Please ensure it's correctly configured.");
             $this->line("For more information, check the documentation of the Livewire3PropertyUpdater package.");
             return 1;
         }
