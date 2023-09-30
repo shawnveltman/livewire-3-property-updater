@@ -288,4 +288,3 @@ it('transforms method names to StudlyCase based on config', function () {
     // Cleanup
     Storage::disk('base_path')->deleteDirectory($tempDirectory);
 });
-

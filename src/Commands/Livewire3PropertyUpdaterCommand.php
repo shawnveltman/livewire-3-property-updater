@@ -9,21 +9,20 @@ use Illuminate\Support\Str;
 class Livewire3PropertyUpdaterCommand extends Command
 {
     public $signature = 'shawnveltman:livewire-3-property-updater';
+
     public $description = 'My command';
 
     public function handle()
     {
-        if (!$this->check_disk_configuration())
-        {
+        if (! $this->check_disk_configuration()) {
             return 1;
         }
 
-        $disk           = config('livewire-3-property-updater.disk', 'local');
+        $disk = config('livewire-3-property-updater.disk', 'local');
         $startDirectory = config('livewire-3-property-updater.start_directory');
-        $files          = Storage::disk($disk)->allFiles($startDirectory);
+        $files = Storage::disk($disk)->allFiles($startDirectory);
 
-        foreach ($files as $file)
-        {
+        foreach ($files as $file) {
             $this->handle_file_update($disk, $file);
         }
 
@@ -33,17 +32,17 @@ class Livewire3PropertyUpdaterCommand extends Command
     private function check_disk_configuration(): bool
     {
         $baseDiskConfig = config('filesystems.disks.base_path');
-        if (!$baseDiskConfig)
-        {
+        if (! $baseDiskConfig) {
             $this->error("The 'base_path' disk is not configured. Please add it to your filesystems configuration.");
             $this->line('For more information, check the documentation of the Livewire3PropertyUpdater package.');
+
             return false;
         }
 
-        if ($baseDiskConfig['root'] !== base_path())
-        {
+        if ($baseDiskConfig['root'] !== base_path()) {
             $this->error("The 'base_path' disk does not point to the application base path. Please ensure it's correctly configured.");
             $this->line('For more information, check the documentation of the Livewire3PropertyUpdater package.');
+
             return false;
         }
 
@@ -55,10 +54,9 @@ class Livewire3PropertyUpdaterCommand extends Command
         $contents = Storage::disk($disk)->get($file);
 
         // Add the Computed use statement if not present and if there's any get{Property}Property method in the file
-        $does_not_already_have_computed_include = !Str::contains($contents, 'use Livewire\Attributes\Computed;');
-        $file_has_property_pattern              = preg_match('/public function get(\w+)Property\(\)/', $contents);
-        if ($file_has_property_pattern && $does_not_already_have_computed_include)
-        {
+        $does_not_already_have_computed_include = ! Str::contains($contents, 'use Livewire\Attributes\Computed;');
+        $file_has_property_pattern = preg_match('/public function get(\w+)Property\(\)/', $contents);
+        if ($file_has_property_pattern && $does_not_already_have_computed_include) {
             // Insert the use statement right before the class declaration
             $contents = preg_replace(
                 '/(class\s)/',
@@ -89,7 +87,6 @@ class Livewire3PropertyUpdaterCommand extends Command
         return $contents;
     }
 
-
     private function get_transformed_property_name(string $originalProperty): string
     {
         $method_style = config('livewire-3-property-updater.method_name_style', 'snake_case');
@@ -101,5 +98,4 @@ class Livewire3PropertyUpdaterCommand extends Command
         // Default to TitleCase (StudlyCase in Laravel's helper functions)
         return Str::studly($originalProperty);
     }
-
 }
