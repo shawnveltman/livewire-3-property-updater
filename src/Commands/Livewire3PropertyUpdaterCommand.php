@@ -17,15 +17,17 @@ class Livewire3PropertyUpdaterCommand extends Command
         // Check if the 'base_path' disk is configured
         $baseDiskConfig = config('filesystems.disks.base_path');
 
-        if (!$baseDiskConfig) {
+        if (! $baseDiskConfig) {
             $this->error("The 'base_path' disk is not configured. Please add it to your filesystems configuration.");
-            $this->line("For more information, check the documentation of the Livewire3PropertyUpdater package.");
+            $this->line('For more information, check the documentation of the Livewire3PropertyUpdater package.');
+
             return 1;
         }
 
         if ($baseDiskConfig['root'] !== base_path()) {
             $this->error("The 'base_path' disk does not point to the application base path. Please ensure it's correctly configured.");
-            $this->line("For more information, check the documentation of the Livewire3PropertyUpdater package.");
+            $this->line('For more information, check the documentation of the Livewire3PropertyUpdater package.');
+
             return 1;
         }
 
@@ -44,7 +46,7 @@ class Livewire3PropertyUpdaterCommand extends Command
                 $snakeCaseProperty = Str::snake($originalProperty);
 
                 // Check for the Computed attribute use statement
-                if (!str_contains($contents, 'use Livewire\Attributes\Computed;')) {
+                if (! str_contains($contents, 'use Livewire\Attributes\Computed;')) {
                     // Insert the use statement right before the class declaration
                     $contents = preg_replace(
                         '/(class\s)/',

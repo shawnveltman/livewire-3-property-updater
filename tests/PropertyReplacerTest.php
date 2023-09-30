@@ -188,7 +188,7 @@ it('shows an error when the base_path disk is not configured', function () {
 
     // Assert the error message
     $commandResult->expectsOutput("The 'base_path' disk is not configured. Please add it to your filesystems configuration.")
-        ->expectsOutput("For more information, check the documentation of the Livewire3PropertyUpdater package.")
+        ->expectsOutput('For more information, check the documentation of the Livewire3PropertyUpdater package.')
         ->assertExitCode(1); // 1 typically represents a general error in CLI applications
 });
 
@@ -200,8 +200,6 @@ it('shows an error when the base_path disk does not point to the application bas
 
     // Assert the error message
     $commandResult->expectsOutput("The 'base_path' disk does not point to the application base path. Please ensure it's correctly configured.")
-        ->expectsOutput("For more information, check the documentation of the Livewire3PropertyUpdater package.")
+        ->expectsOutput('For more information, check the documentation of the Livewire3PropertyUpdater package.')
         ->assertExitCode(1); // 1 typically represents a general error in CLI applications
 });
-
-
