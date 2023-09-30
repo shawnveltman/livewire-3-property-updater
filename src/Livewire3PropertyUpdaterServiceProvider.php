@@ -22,4 +22,5 @@ class Livewire3PropertyUpdaterServiceProvider extends PackageServiceProvider
             ->hasMigration('create_livewire-3-property-updater_table')
             ->hasCommand(Livewire3PropertyUpdaterCommand::class);
     }
+
 }
