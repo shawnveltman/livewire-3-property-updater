@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace Shawnveltman\Livewire3PropertyUpdater;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use VendorName\Skeleton\Commands\SkeletonCommand;
+use Shawnveltman\Livewire3PropertyUpdater\Commands\Livewire3PropertyUpdaterCommand;
 
-class SkeletonServiceProvider extends PackageServiceProvider
+class Livewire3PropertyUpdaterServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -16,10 +16,10 @@ class SkeletonServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('skeleton')
+            ->name('livewire-3-property-updater')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_skeleton_table')
-            ->hasCommand(SkeletonCommand::class);
+            ->hasMigration('create_livewire-3-property-updater_table')
+            ->hasCommand(Livewire3PropertyUpdaterCommand::class);
     }
 }

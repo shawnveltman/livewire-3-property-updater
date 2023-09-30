@@ -1,17 +1,17 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "shawnveltman/livewire-3-property-updater",
+    "description": "A package to update Livewire 2 computed properties to use the Livewire 3 syntax",
     "keywords": [
-        ":vendor_name",
+        "shawnveltman",
         "laravel",
-        ":package_slug"
+        "livewire-3-property-updater"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/shawnveltman/livewire-3-property-updater",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Shawn Veltman",
+            "email": "shawn.veltman@gmail.com",
             "role": "Developer"
         }
     ],
@@ -35,19 +35,19 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "Shawnveltman\\Livewire3PropertyUpdater\\": "src/",
+            "Shawnveltman\\Livewire3PropertyUpdater\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/",
+            "Shawnveltman\\Livewire3PropertyUpdater\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
-        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "clear": "@php vendor/bin/testbench package:purge-livewire-3-property-updater --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": [
             "@composer run prepare",
@@ -73,10 +73,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "Shawnveltman\\Livewire3PropertyUpdater\\Livewire3PropertyUpdaterServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "Livewire3PropertyUpdater": "Shawnveltman\\Livewire3PropertyUpdater\\Facades\\Livewire3PropertyUpdater"
             }
         }
     },
