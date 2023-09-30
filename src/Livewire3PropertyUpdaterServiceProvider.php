@@ -2,9 +2,9 @@
 
 namespace Shawnveltman\Livewire3PropertyUpdater;
 
+use Shawnveltman\Livewire3PropertyUpdater\Commands\Livewire3PropertyUpdaterCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Shawnveltman\Livewire3PropertyUpdater\Commands\Livewire3PropertyUpdaterCommand;
 
 class Livewire3PropertyUpdaterServiceProvider extends PackageServiceProvider
 {

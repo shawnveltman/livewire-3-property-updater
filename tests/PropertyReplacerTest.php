@@ -1,9 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Storage;
+
 use function Pest\Laravel\artisan;
 
-function setup_temp_directory(): string {
+function setup_temp_directory(): string
+{
     $tempDirectory = base_path('tests/temp');
     Storage::disk('local')->makeDirectory($tempDirectory);
 
@@ -16,13 +18,13 @@ function setup_temp_directory(): string {
 it('converts livewire properties', function () {
     // Setup
     $tempDirectory = setup_temp_directory();
-    Storage::disk('local')->put($tempDirectory . '/SampleComponent.php', 'public function getFooProperty() {...}');
+    Storage::disk('local')->put($tempDirectory.'/SampleComponent.php', 'public function getFooProperty() {...}');
 
     // Run the command
     artisan('shawnveltman:livewire-3-property-updater')->assertExitCode(0);
 
     // Assert file contents were updated
-    $contents = Storage::disk('local')->get($tempDirectory . '/SampleComponent.php');
+    $contents = Storage::disk('local')->get($tempDirectory.'/SampleComponent.php');
     expect($contents)
         ->toContain('#[Computed]')
         ->toContain('public function foo()');
@@ -34,7 +36,7 @@ it('converts livewire properties', function () {
 it('updates properties without overwriting existing use statements', function () {
     // Setup
     $tempDirectory = setup_temp_directory();
-    $tempFile = $tempDirectory . '/ExistingUseStatementsComponent.php';
+    $tempFile = $tempDirectory.'/ExistingUseStatementsComponent.php';
     Storage::disk('local')->put($tempFile, <<<'EOD'
 <?php
 
@@ -57,7 +59,7 @@ EOD
     expect($contents)
         ->toContain('use Illuminate\Support\Collection;')
         ->toContain('use Livewire\Attributes\Computed;')
-        ->toContain('#[Computed]' . PHP_EOL . 'public function foo()');
+        ->toContain('#[Computed]'.PHP_EOL.'public function foo()');
 
     // Cleanup
     Storage::disk('local')->deleteDirectory($tempDirectory);
@@ -66,7 +68,7 @@ EOD
 it('makes no changes to a file without livewire properties', function () {
     // Setup
     $tempDirectory = setup_temp_directory();
-    $tempFile = $tempDirectory . '/NoPropertiesComponent.php';
+    $tempFile = $tempDirectory.'/NoPropertiesComponent.php';
     $originalContents = <<<'EOD'
 <?php
 
@@ -93,7 +95,7 @@ EOD;
 it('ignores methods that are not livewire properties', function () {
     // Setup
     $tempDirectory = setup_temp_directory();
-    $tempFile = $tempDirectory . '/GetMethodComponent.php';
+    $tempFile = $tempDirectory.'/GetMethodComponent.php';
     Storage::disk('local')->put($tempFile, <<<'EOD'
 <?php
 
@@ -122,7 +124,7 @@ EOD
 it('correctly updates only the livewire properties in a mixed file', function () {
     // Setup
     $tempDirectory = setup_temp_directory();
-    $tempFile = $tempDirectory . '/MixedMethodsComponent.php';
+    $tempFile = $tempDirectory.'/MixedMethodsComponent.php';
     Storage::disk('local')->put($tempFile, <<<'EOD'
 <?php
 
@@ -143,7 +145,7 @@ EOD
     $contents = Storage::disk('local')->get($tempFile);
     expect($contents)
         ->toContain('use Livewire\Attributes\Computed;')
-        ->toContain('#[Computed]' . PHP_EOL . 'public function foo()')
+        ->toContain('#[Computed]'.PHP_EOL.'public function foo()')
         ->toContain('public function getSomething()');
 
     // Cleanup
@@ -153,7 +155,7 @@ EOD
 it('does not affect files outside the specified directory', function () {
     $outsideDirectory = base_path('tests/outside_temp');
     Storage::disk('local')->makeDirectory($outsideDirectory);
-    Storage::disk('local')->put($outsideDirectory . '/OutsideComponent.php', 'public function getFooProperty() {...}');
+    Storage::disk('local')->put($outsideDirectory.'/OutsideComponent.php', 'public function getFooProperty() {...}');
 
     // Mock the config to return a different directory
     config()->set('livewire-3-property-updater.start_directory', base_path('tests/temp'));
@@ -162,10 +164,9 @@ it('does not affect files outside the specified directory', function () {
     artisan('shawnveltman:livewire-3-property-updater')->assertExitCode(0);
 
     // Assert file contents remain unchanged
-    $contents = Storage::disk('local')->get($outsideDirectory . '/OutsideComponent.php');
+    $contents = Storage::disk('local')->get($outsideDirectory.'/OutsideComponent.php');
     expect($contents)->toBe('public function getFooProperty() {...}');
 
     // Cleanup
     Storage::disk('local')->deleteDirectory($outsideDirectory);
 });
-
