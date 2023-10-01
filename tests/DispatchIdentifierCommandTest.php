@@ -119,7 +119,7 @@ EOD;
     $response_string = $command->response_string;
     ray($response_string);
 
-    assertTrue(Str::contains('/' . $response_string, $filePath . ':8'));
+    assertTrue(Str::contains('/'.$response_string, $filePath.':8'));
 });
 
 it('ignores dispatch with named arguments', function () {
@@ -144,8 +144,5 @@ EOD;
 
     $response_string = $command->response_string;
 
-    assertFalse(Str::contains('/' . $response_string, $filePath));
+    assertFalse(Str::contains('/'.$response_string, $filePath));
 });
-
-
-
