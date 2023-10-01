@@ -2,13 +2,14 @@
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
+
 use function Pest\Laravel\artisan;
 
 beforeEach(function () {
     // Set the disk configuration for the tests
     Config::set('filesystems.disks.base_path', [
         'driver' => 'local',
-        'root'   => base_path(),
+        'root' => base_path(),
     ]);
 });
 
@@ -16,8 +17,7 @@ afterEach(function () {
     $tempDirectory = base_path('tests/temp');
 
     // Ensure the 'base_path' disk is configured before proceeding
-    if (config('filesystems.disks.base_path') && Storage::disk('base_path')->exists($tempDirectory))
-    {
+    if (config('filesystems.disks.base_path') && Storage::disk('base_path')->exists($tempDirectory)) {
         Storage::disk('base_path')->deleteDirectory($tempDirectory);
     }
 });

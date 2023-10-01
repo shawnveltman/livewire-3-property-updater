@@ -2,12 +2,13 @@
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
+
 use function Pest\Laravel\artisan;
 
 beforeEach(function () {
     Config::set('filesystems.disks.base_path', [
         'driver' => 'local',
-        'root'   => base_path(),
+        'root' => base_path(),
     ]);
 });
 
@@ -15,8 +16,7 @@ afterEach(function () {
     $tempDirectory = base_path('tests/temp');
 
     // Ensure the 'base_path' disk is configured before proceeding
-    if (config('filesystems.disks.base_path') && Storage::disk('base_path')->exists($tempDirectory))
-    {
+    if (config('filesystems.disks.base_path') && Storage::disk('base_path')->exists($tempDirectory)) {
         Storage::disk('base_path')->deleteDirectory($tempDirectory);
     }
 });
@@ -24,7 +24,7 @@ afterEach(function () {
 describe('Livewire Property Updater', function () {
 
     it('converts livewire properties', function () {
-        $content   = 'public function getFooProperty() {...}';
+        $content = 'public function getFooProperty() {...}';
         $file_path = $this->setup_file_with_content('SampleComponent.php', $content);
         artisan('shawnveltman:livewire-3-property-updater')->assertExitCode(0);
         $contents = Storage::disk('base_path')->get($file_path);
@@ -34,7 +34,7 @@ describe('Livewire Property Updater', function () {
     });
 
     it('updates properties without overwriting existing use statements', function () {
-        $content   = <<<'EOD'
+        $content = <<<'EOD'
 <?php
 
 namespace App\Http\Livewire;
@@ -52,11 +52,11 @@ EOD;
         expect($contents)
             ->toContain('use Illuminate\Support\Collection;')
             ->toContain('use Livewire\Attributes\Computed;')
-            ->toContain('#[Computed]' . PHP_EOL . 'public function foo()');
+            ->toContain('#[Computed]'.PHP_EOL.'public function foo()');
     });
 
     it('makes no changes to a file without livewire properties', function () {
-        $content   = <<<'EOD'
+        $content = <<<'EOD'
 <?php
 
 namespace App\Http\Livewire;
@@ -73,7 +73,7 @@ EOD;
     });
 
     it('ignores methods that are not livewire properties', function () {
-        $content   = <<<'EOD'
+        $content = <<<'EOD'
 <?php
 
 namespace App\Http\Livewire;
@@ -92,7 +92,7 @@ EOD;
     });
 
     it('correctly updates only the livewire properties in a mixed file', function () {
-        $content   = <<<'EOD'
+        $content = <<<'EOD'
 <?php
 
 namespace App\Http\Livewire;
@@ -108,7 +108,7 @@ EOD;
         $contents = Storage::disk('base_path')->get($file_path);
         expect($contents)
             ->toContain('use Livewire\Attributes\Computed;')
-            ->toContain('#[Computed]' . PHP_EOL . 'public function foo()')
+            ->toContain('#[Computed]'.PHP_EOL.'public function foo()')
             ->toContain('public function getSomething()');
     });
 
@@ -116,10 +116,10 @@ EOD;
         $outsideDirectory = base_path('tests/outside_temp');
         Storage::disk('base_path')->makeDirectory($outsideDirectory);
         $content = 'public function getFooProperty() {...}';
-        Storage::disk('base_path')->put($outsideDirectory . '/OutsideComponent.php', $content);
+        Storage::disk('base_path')->put($outsideDirectory.'/OutsideComponent.php', $content);
         config()->set('livewire-3-property-updater.start_directory', base_path('tests/temp'));
         artisan('shawnveltman:livewire-3-property-updater')->assertExitCode(0);
-        $contents = Storage::disk('base_path')->get($outsideDirectory . '/OutsideComponent.php');
+        $contents = Storage::disk('base_path')->get($outsideDirectory.'/OutsideComponent.php');
         expect($contents)->toBe($content);
         Storage::disk('base_path')->deleteDirectory($outsideDirectory);
     });
@@ -145,7 +145,7 @@ EOD;
     });
 
     it('correctly updates all instances of the livewire properties in a file', function () {
-        $content   = <<<'EOD'
+        $content = <<<'EOD'
 <?php
 
 namespace App\Http\Livewire;
@@ -163,16 +163,16 @@ EOD;
         artisan('shawnveltman:livewire-3-property-updater')->assertExitCode(0);
         $contents = Storage::disk('base_path')->get($file_path);
         expect($contents)
-            ->toContain('#[Computed]' . PHP_EOL . 'public function first()')
+            ->toContain('#[Computed]'.PHP_EOL.'public function first()')
             ->toContain('public function someRandomMethod()')
-            ->toContain('#[Computed]' . PHP_EOL . 'public function second()')
+            ->toContain('#[Computed]'.PHP_EOL.'public function second()')
             ->toContain('public function anotherRandomMethod()')
-            ->toContain('#[Computed]' . PHP_EOL . 'public function last()');
+            ->toContain('#[Computed]'.PHP_EOL.'public function last()');
     });
 
     it('transforms method names to snake_case based on config', function () {
         config()->set('livewire-3-property-updater.method_name_style', 'snake_case');
-        $content   = 'public function getSomeRandomProperty() {...}';
+        $content = 'public function getSomeRandomProperty() {...}';
         $file_path = $this->setup_file_with_content('SnakeCaseComponent.php', $content);
 
         artisan('shawnveltman:livewire-3-property-updater')->assertExitCode(0);
@@ -187,7 +187,7 @@ EOD;
         // Mock the config to transform method names to StudlyCase
         config()->set('livewire-3-property-updater.method_name_style', 'StudlyCase');
 
-        $content   = 'public function getAnotherRandomProperty() {...}';
+        $content = 'public function getAnotherRandomProperty() {...}';
         $file_path = $this->setup_file_with_content('StudlyCaseComponent.php', $content);
 
         // Run the command
