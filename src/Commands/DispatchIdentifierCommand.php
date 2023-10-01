@@ -71,9 +71,8 @@ class DispatchIdentifierCommand extends Command
             {
                 $eventName = $matches[1];
 
-                if (!in_array($eventName, $ignoreEvents))
-                {
-                    $output_string     = "{$file}:" . ($lineNumber + 1);  // Using $file directly
+                if (! in_array($eventName, $ignoreEvents)) {
+                    $output_string = "{$file}:".($lineNumber + 1);  // Using $file directly
                     $this->responses[] = $output_string;
                 }
             }
