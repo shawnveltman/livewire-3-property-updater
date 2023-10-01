@@ -70,9 +70,8 @@ class DispatchIdentifierCommand extends Command
             if (preg_match("/dispatch\(\s*'([^']+)',/", $line, $matches)) {
                 $eventName = $matches[1];
 
-                if (!in_array($eventName, $ignoreEvents))
-                {
-                    $output_string     = "{$file}:" . ($lineNumber + 1);  // Using $file directly
+                if (! in_array($eventName, $ignoreEvents)) {
+                    $output_string = "{$file}:".($lineNumber + 1);  // Using $file directly
                     $this->responses[] = $output_string;
                 }
             }
