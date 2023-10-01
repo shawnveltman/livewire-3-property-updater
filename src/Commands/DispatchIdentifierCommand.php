@@ -67,7 +67,8 @@ class DispatchIdentifierCommand extends Command
         $lines = explode(PHP_EOL, $contents);
 
         foreach ($lines as $lineNumber => $line) {
-            if (preg_match("/dispatch\(\s*'([^']+)',/", $line, $matches)) {
+            if (preg_match("/dispatch\(\s*'([^']+)'\s*,\s*(?!.*?:)/", $line, $matches))
+            {
                 $eventName = $matches[1];
 
                 if (!in_array($eventName, $ignoreEvents))

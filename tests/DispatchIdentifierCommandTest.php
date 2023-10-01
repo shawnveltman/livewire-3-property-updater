@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Shawnveltman\Livewire3PropertyUpdater\Commands\DispatchIdentifierCommand;
 
 use function Pest\Laravel\artisan;
+use function PHPUnit\Framework\assertFalse;
 use function PHPUnit\Framework\assertTrue;
 
 beforeEach(function () {
@@ -23,7 +24,6 @@ afterEach(function () {
     }
 });
 
-/** @test */
 it('prints the correct file and line number for dispatch pattern', function () {
     $content = <<<'EOD'
 <?php
@@ -95,3 +95,57 @@ EOD;
     $commandResult->doesntExpectOutput($filePath.':6')
         ->assertExitCode(0);
 });
+
+it('identifies dispatch without named arguments', function () {
+    $content = <<<'EOD'
+<?php
+
+namespace App\Http\Livewire;
+
+class TestComponent extends Component
+{
+    public function someMethod() {
+        $this->dispatch('eventName', ['param1' => 'value1']);
+    }
+}
+EOD;
+
+    $filePath = $this->setup_file_with_content('TestComponentWithoutNamedArguments.php', $content);
+
+    // Execute the command and capture its output
+    $command = new DispatchIdentifierCommand();
+    $command->handle();
+
+    $response_string = $command->response_string;
+    ray($response_string);
+
+    assertTrue(Str::contains('/' . $response_string, $filePath . ':8'));
+});
+
+it('ignores dispatch with named arguments', function () {
+    $content = <<<'EOD'
+<?php
+
+namespace App\Http\Livewire;
+
+class TestComponent extends Component
+{
+    public function someMethod() {
+        $this->dispatch('changed_prospect_count', details: ['some array','values']);
+    }
+}
+EOD;
+
+    $filePath = $this->setup_file_with_content('TestComponentWithNamedArguments.php', $content);
+
+    // Execute the command and capture its output
+    $command = new DispatchIdentifierCommand();
+    $command->handle();
+
+    $response_string = $command->response_string;
+
+    assertFalse(Str::contains('/' . $response_string, $filePath));
+});
+
+
+
