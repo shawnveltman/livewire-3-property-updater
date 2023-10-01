@@ -66,8 +66,17 @@ When running this command, it'll scan the Livewire components in your specified 
 ```bash
 php artisan shawnveltman:livewire-null-property-updater
 ```
-## Usage
 
+## Identify Dispatch Patterns in Livewire
+The shawnveltman:dispatch-identifier command scans your Livewire components for specific dispatch patterns. It's especially useful when identifying or refactoring certain dispatch() method usages in Livewire.
+
+The command filters out dispatches with named arguments and presents an output of file paths with the line numbers where the dispatch() method matches the targeted pattern.
+
+## Usage for identifying dispatch patterns
+
+```bash
+php artisan shawnveltman:dispatch-identifier
+```
 
 ## Testing
 
