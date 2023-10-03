@@ -48,7 +48,15 @@ return [
     'method_name_style' => 'snake_case', // StudlyCase or  snake_case
 ];
 ```
-I'm the kind of monster that GREATLY prefers snake_case for method names, so that's the default, but it's easy enough to change it to StudlyCase if that's your preference
+Two notes on this.  First and foremost, the package expects you to have a disk called 'base_path' set up (typically in config/filesystems.php) which points to the base path of the app. 
+```
+...
+ 'base_path' => [
+            'driver' => 'local',
+            'root'   => base_path(),
+        ],
+```
+Second - I'm the kind of monster that GREATLY prefers snake_case for method names, so that's the default, but it's easy enough to change it to StudlyCase if that's your preference
 
 
 ## Usage for updating computed properties
